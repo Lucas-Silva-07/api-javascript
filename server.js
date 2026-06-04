@@ -5,7 +5,7 @@ const app = express()
 app.use(express.json())
 
 // Criar agendamento
-app.post('/clients', async (req, res) => {
+app.post('/clients', async (req, res) => {  // {name: string, phone: string, date: string, hour: string, price: float, service: string}
   try { 
     await prisma.clients.create({
       data: {
@@ -38,18 +38,18 @@ app.get('/clients', async (req, res) => {
 }); 
 
 // Listar horario de acordo com a data
-app.get('/scheduleDate', async (req, res) => {
+app.get('/scheduleAt', async (req, res) => {  // {"date": "2026-06-03"}
   try {
     const hours = await prisma.clients.findMany({
       where: {
-        date: req.body.date
+        date: new Date(req.body.date)
       }
     });
-    res.status(400).json(req.body);
+    res.status(400).json(hours.map(item => item.hour));
   } catch (error) {
     console.error(error);
     res.status(500).json({error: 'Erro na busca dos horarios'})
   }
-})
+});
 
 app.listen(3000);
