@@ -1,8 +1,15 @@
-import express from "express"
-import { prisma } from './lib/prisma.js'
+import express from "express";
+import cors from 'cors';
+import { prisma } from './lib/prisma.js';
 
-const app = express()
-app.use(express.json())
+const app = express();
+
+
+app.use(cors({
+  origin: 'http://127.0.0.1:5500'
+}));
+
+app.use(express.json());
 
 // Criar agendamento
 app.post('/clients', async (req, res) => {  // {name: string, phone: string, date: string, hour: string, price: float, service: string}
